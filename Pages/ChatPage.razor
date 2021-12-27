@@ -1,0 +1,36 @@
+﻿@page "/Chat"
+@using BlazMelOpenSourcesApi.Models
+@using BlazMelOpenSourcesApi.Services
+
+<button @onclick="Changer" class="btn alert-info">Cliquer ici pour changer l'image </button>
+<br/>
+<br/>
+
+@if (Chat != null)
+{
+    <img src="@Chat.url" class="monImage"   />
+}
+
+@code {
+
+    public Chat? Chat { get; set; }
+    [Inject] private IChatService chatService { get; set; }
+
+    protected override async void OnInitialized()
+    {
+
+        var _chat = await chatService.GetChats();
+        Chat = _chat.FirstOrDefault();
+        await InvokeAsync(StateHasChanged);
+        base.OnInitialized();
+    }
+
+    public async void Changer()
+    {
+        var _chat = await chatService.GetChats();
+        Chat = _chat.FirstOrDefault();
+        await InvokeAsync(StateHasChanged);
+    }
+
+
+}
